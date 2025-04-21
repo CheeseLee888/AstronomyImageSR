@@ -1,0 +1,13 @@
+numpy
+jupyter
+matplotlib
+runstats
+pylint
+keras-tqdm
+pydot
+tensorboard
+tensorflow==2.2
+click
+scikit-image
+pandas
+bm3d
