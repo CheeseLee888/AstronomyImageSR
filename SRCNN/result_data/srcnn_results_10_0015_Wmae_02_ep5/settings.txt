@@ -1,0 +1,6 @@
+change = 10_0015
+LOSS_FUNC = WeightedMAE
+n_folds = 5
+k_folds = 3
+n_epochs = 5
+IMG_NUM = 474

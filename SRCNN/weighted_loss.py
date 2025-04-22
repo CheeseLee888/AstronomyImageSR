@@ -26,6 +26,19 @@ def compute_center_weight_map(image_tensor, alpha=0.5):
 
     return weight.unsqueeze(0).unsqueeze(0).repeat(B, 1, 1, 1)
 
+class CenterWeightedMAELoss(nn.Module):
+    def __init__(self, alpha=0.5):
+        super().__init__()
+        self.alpha = alpha
+
+    def forward(self, pred, target):
+        with torch.no_grad():
+            weight_map = compute_center_weight_map(target, alpha=self.alpha)
+        # return torch.mean(weight_map * torch.abs(pred - target))
+        loss = weight_map * torch.abs(pred - target)
+        return loss.mean()
+
+
 class CenterWeightedMSELoss(nn.Module):
     def __init__(self, alpha=0.5):
         super().__init__()

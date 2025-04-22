@@ -28,7 +28,7 @@ from utils_custom import AverageMeter, calc_psnr, calc_ssim, calc_sssim # modify
 
 
 # 本论文核心：增加损失函数设计
-# from weighted_loss import WeightedMSELoss
+from weighted_loss import CenterWeightedMAELoss
 from weighted_loss import CenterWeightedMSELoss
 
 
@@ -40,11 +40,13 @@ from weighted_loss import CenterWeightedMSELoss
 ###
 change='10_0015' # IMPORTANT: choose the change from hr to lr here, '10_0015' or '10_001' or '4_001'
 
-LOSS_FUNC = 'Weighted' # 损失函数选择：'MSE' or 'Weighted'
-ALPHA = 4.0 # 损失函数参数：加权均方误差的α值
+LOSS_FUNC = 'WeightedMAE' # 损失函数选择：'MAE' or 'MSE' or 'WeightedMAE' or 'WeightedMSE'
+ALPHA = 8.0 # 损失函数参数：加权均方误差的α值(上面选择Weighted时使用)
 
-# weight='mse' # 对应 MSE
-weight='wl_04' # 对应 weight_map = 1.0 + 4.0 * weight_map 细节区域权重范围 [1, 5]
+# weight='mae' # 对应 MAE L1
+# weight='mse' # 对应 MSE L2
+# weight='wl_04' # 对应 weight_map = 1.0 + 4.0 * weight_map 细节区域权重范围 [1, 5]
+weight='Wmae_08' # 对应 weight_map = 1.0 + 8.0 * weight_map 细节区域权重范围 [1, 9]
 
 
 # 训练周期
@@ -189,12 +191,15 @@ if __name__ == '__main__':
 
             model = SRCNN().to(device)
             
-            # 损失函数：均方误差 or 加权均方误差
+            # 损失函数选择
             if LOSS_FUNC == 'MSE':
                 criterion = nn.MSELoss()
-            elif LOSS_FUNC == 'Weighted':
-                # criterion = WeightedMSELoss()
+            elif LOSS_FUNC == 'MAE':
+                criterion = nn.L1Loss()
+            elif LOSS_FUNC == 'WeightedMSE':
                 criterion = CenterWeightedMSELoss(alpha=ALPHA)
+            elif LOSS_FUNC == 'WeightedMAE':
+                criterion = CenterWeightedMAELoss(alpha=ALPHA)
             else:
                 raise ValueError("Invalid loss function. Choose 'MSE' or 'Weighted'.")
 
