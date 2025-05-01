@@ -1,0 +1,7 @@
+change = 4_001
+LOSS_FUNC = WeightedMSE
+ALPHA = 4.0
+n_folds = 5
+k_folds = 3
+n_epochs = 5
+IMG_NUM = 474

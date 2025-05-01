@@ -38,15 +38,15 @@ from weighted_loss import CenterWeightedMSELoss
 #唯一需要修改的地方！！！
 #还有第170行左右 损失函数的选择
 ###
-change='10_0015' # IMPORTANT: choose the change from hr to lr here, '10_0015' or '10_001' or '4_001'
+change='4_001' # IMPORTANT: choose the change from hr to lr here, '10_0015' or '10_001' or '4_001'
 
 LOSS_FUNC = 'WeightedMAE' # 损失函数选择：'MAE' or 'MSE' or 'WeightedMAE' or 'WeightedMSE'
-ALPHA = 8.0 # 损失函数参数：加权均方误差的α值(上面选择Weighted时使用)
+ALPHA = 4.0 # 损失函数参数：加权均方误差的α值(上面选择Weighted时使用)
 
 # weight='mae' # 对应 MAE L1
 # weight='mse' # 对应 MSE L2
-# weight='wl_04' # 对应 weight_map = 1.0 + 4.0 * weight_map 细节区域权重范围 [1, 5]
-weight='Wmae_08' # 对应 weight_map = 1.0 + 8.0 * weight_map 细节区域权重范围 [1, 9]
+# weight='Wmse_02' # 对应 weight_map = 1.0 + 4.0 * weight_map 细节区域权重范围 [1, 5]
+weight='Wmae_04' # 对应 weight_map = 1.0 + 2.0 * weight_map 细节区域权重范围 [1, 3]
 
 
 # 训练周期
@@ -72,7 +72,7 @@ os.makedirs(save_dir, exist_ok=True)
 with open(f"{save_dir}/settings.txt", "w") as f:
     f.write(f"change = {change}\n")
     f.write(f"LOSS_FUNC = {LOSS_FUNC}\n")
-    if LOSS_FUNC == 'Weighted':
+    if LOSS_FUNC == 'WeightedMAE' or LOSS_FUNC == 'WeightedMSE':
         f.write(f"ALPHA = {ALPHA}\n")
     f.write(f"n_folds = {n_folds}\n")
     f.write(f"k_folds = {k_folds}\n")
@@ -267,6 +267,20 @@ if __name__ == '__main__':
                 print('eval psnr: {:.2f}'.format(epoch_psnr.avg))
                 print('eval ssim: {:.2f}'.format(epoch_ssim.avg))
                 print('eval sssim: {:.2f}'.format(epoch_sssim.avg))
+
+                # with open(os.path.join(save_dir, "eval_log.txt"), "a") as f:
+                #     f.write(f"Epoch {epoch+1}: PSNR={eval_psnr:.3f}, SSIM={eval_ssim:.3f}, SSSIM={eval_sssim:.3f}\n")
+                
+                # save log
+                log_path = os.path.join(save_dir, 'eval_log.txt')
+                with open(log_path, "a") as f:
+                    f.write(
+                        f"n_fold={n_fold}, k_fold={k_ind}, epoch={epoch+1}: "
+                        f"Loss={epoch_losses.avg:.6f}, PSNR={epoch_psnr.avg:.3f}, "
+                        f"SSIM={epoch_ssim.avg:.3f}, SSSIM={epoch_sssim.avg:.3f}\n"
+                    )
+
+
 
                 if epoch_sssim.avg > k_best_sssim:
                     k_best_epoch = epoch
