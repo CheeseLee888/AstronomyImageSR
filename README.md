@@ -13,4 +13,8 @@ The project includes:
 - Custom loss functions: `WeightedMSELoss`, `WeightedMAELoss`
 - Evaluation metrics: SSIM, Selective SSIM (SSSIM)
 
-
+## TO DO
+For codes in SRCNN folder:
+1. cater more image formats (such as tiff);
+2. optimize the structure of all these codes
+3. add some reasonable notes and markdowns
