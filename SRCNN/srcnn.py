@@ -16,12 +16,12 @@ from sklearn.model_selection import KFold
 from tqdm import tqdm
 
 from models import SRCNN
-# from utils import AverageMeter, calc_psnr, calc_ssim, calc_sssim
+
 from create_dataset import AstropyDataset
 import numpy as np
 
 import sys
-sys.path.append("/Users/peterli/Desktop/BS_thesis/code_main/Data Preparation")  # locally defined
+sys.path.append('../')  # locally defined
 from utils_custom import AverageMeter, calc_psnr, calc_ssim, calc_sssim # modify utils to utils_custom to avoid conflict with Python package 'utils'
 
 
@@ -34,34 +34,36 @@ from weighted_loss import CenterWeightedMSELoss
 
 
 
-### 
-#唯一需要修改的地方！！！
-#还有第170行左右 损失函数的选择
-###
-change='4_001' # IMPORTANT: choose the change from hr to lr here, '10_0015' or '10_001' or '4_001'
+"""
+THE ONLY CELL BELOW: MODIFY VALUES TO CATER
+"""
 
-LOSS_FUNC = 'WeightedMAE' # 损失函数选择：'MAE' or 'MSE' or 'WeightedMAE' or 'WeightedMSE'
-ALPHA = 4.0 # 损失函数参数：加权均方误差的α值(上面选择Weighted时使用)
+image_dataset_name = 'TIFF_TEST_FIVE' # image dataset folder name
+image_format = 'tif' # 'tif' or 'fits'
+change = '4_001' #  '4_001' or '10_001' or '10_0015'
+
+LOSS_FUNC = 'WeightedMSE' # 损失函数选择：'MAE' or 'MSE' or 'WeightedMAE' or 'WeightedMSE'
+ALPHA = 2.0 # 损失函数参数：加权均方误差的α值(上面选择Weighted时使用)
 
 # weight='mae' # 对应 MAE L1
 # weight='mse' # 对应 MSE L2
-# weight='Wmse_02' # 对应 weight_map = 1.0 + 4.0 * weight_map 细节区域权重范围 [1, 5]
-weight='Wmae_04' # 对应 weight_map = 1.0 + 2.0 * weight_map 细节区域权重范围 [1, 3]
+weight='Wmse_02' # 对应 weight_map = 1.0 + 4.0 * weight_map 细节区域权重范围 [1, 5]
+# weight='Wmae_04' # 对应 weight_map = 1.0 + 2.0 * weight_map 细节区域权重范围 [1, 3]
 
 
 # 训练周期
 n_folds = 5 # split code into 5 folds
 # k_folds = 10 # perform 10-fold cross validation on n_train_dataloader
-k_folds = 3 # perform 10-fold cross validation on n_train_dataloader
+k_folds = 2 # perform 10-fold cross validation on n_train_dataloader
 # n_epochs = 15 # number of epochs for training
 n_epochs = 5 # number of epochs for training
 
-IMG_NUM=474 # how many images in the dataset
+IMG_NUM=5 # how many images in the dataset
 # ITER=n_epochs # number of iterations
 
 
 save_file_name = change +  '_' + weight + '_ep' + str(n_epochs)
-save_path = "result_data/srcnn_results_"
+save_path = 'result_data_'+image_dataset_name+'/'
 
 save_dir = save_path + save_file_name
 
@@ -105,7 +107,8 @@ if __name__ == '__main__':
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
     dataset = AstropyDataset(
-        csv_file="srcnn_prep_images_"+change+".csv"
+        csv_file='srcnn_prep_filename/'+image_dataset_name+'_'+change+'.csv',
+        image_format=image_format
     )
 
     
