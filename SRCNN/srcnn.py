@@ -22,12 +22,12 @@ import numpy as np
 
 import sys
 sys.path.append('../')  # locally defined
-from utils_custom import AverageMeter, calc_psnr, calc_ssim, calc_sssim # modify utils to utils_custom to avoid conflict with Python package 'utils'
+from utils_custom import save_output_image, AverageMeter, calc_psnr, calc_ssim, calc_sssim # modify utils to utils_custom to avoid conflict with Python package 'utils'
 
 
 
 
-# 本论文核心：增加损失函数设计
+# add weighted loss function
 from weighted_loss import CenterWeightedMAELoss
 from weighted_loss import CenterWeightedMSELoss
 
@@ -38,35 +38,38 @@ from weighted_loss import CenterWeightedMSELoss
 THE ONLY CELL BELOW: MODIFY VALUES TO CATER
 """
 
-image_dataset_name = 'TIFF_TEST_FIVE' # image dataset folder name
+image_dataset_name = 'Hubble_Images_top90_256x256' # image dataset folder name
 image_format = 'tif' # 'tif' or 'fits'
 change = '4_001' #  '4_001' or '10_001' or '10_0015'
 
-LOSS_FUNC = 'WeightedMSE' # 损失函数选择：'MAE' or 'MSE' or 'WeightedMAE' or 'WeightedMSE'
-ALPHA = 2.0 # 损失函数参数：加权均方误差的α值(上面选择Weighted时使用)
+LOSS_FUNC = 'WeightedMSE' # choose loss function：'MAE' or 'MSE' or 'WeightedMAE' or 'WeightedMSE'
+ALPHA = 2.0 # parameter for weighted loss function
 
-# weight='mae' # 对应 MAE L1
-# weight='mse' # 对应 MSE L2
-weight='Wmse_02' # 对应 weight_map = 1.0 + 4.0 * weight_map 细节区域权重范围 [1, 5]
-# weight='Wmae_04' # 对应 weight_map = 1.0 + 2.0 * weight_map 细节区域权重范围 [1, 3]
+# Below is for distinguished file name setting
+
+# weight='mae' # MAE L1
+# weight='mse' # MSE L2
+weight='Wmse_02' # weighted mse, weight_map = 1.0 + 2.0 * weight_map
+# weight='Wmae_04' # weighted mae, weight_map = 1.0 + 4.0 * weight_map
 
 
-# 训练周期
+# set training methods
 n_folds = 5 # split code into 5 folds
-# k_folds = 10 # perform 10-fold cross validation on n_train_dataloader
-k_folds = 2 # perform 10-fold cross validation on n_train_dataloader
-# n_epochs = 15 # number of epochs for training
-n_epochs = 5 # number of epochs for training
 
-IMG_NUM=5 # how many images in the dataset
-# ITER=n_epochs # number of iterations
+k_folds = 4 # perform 10-fold cross validation on n_train_dataloader
+
+n_epochs = 10 # number of epochs for training
+
+IMG_NUM = 90 # how many images in the dataset
+
+
 
 
 save_file_name = change +  '_' + weight + '_ep' + str(n_epochs)
 save_path = 'result_data_'+image_dataset_name+'/'
 
 save_dir = save_path + save_file_name
-
+scrnn_image_dir = '../../SRCNN_Images/'+image_dataset_name+'/'+save_file_name # output: SRCNN images
 
 os.makedirs(save_dir, exist_ok=True)
 
@@ -120,7 +123,7 @@ if __name__ == '__main__':
     # n_ind = 0
     for n_fold, (n_train_ids, n_eval_ids) in enumerate(nfold.split(dataset)):
 
-        # 如果该 fold 下的所有 result_all 文件都存在 → 跳过
+        # if all results_all files exist, skip this fold
         skip_fold = True
         for metric in ['train', 'val', 'test']:
             for measure in ['psnr', 'ssim', 'sssim']:
@@ -194,7 +197,7 @@ if __name__ == '__main__':
 
             model = SRCNN().to(device)
             
-            # 损失函数选择
+            # choose loss function
             if LOSS_FUNC == 'MSE':
                 criterion = nn.MSELoss()
             elif LOSS_FUNC == 'MAE':
@@ -207,7 +210,7 @@ if __name__ == '__main__':
                 raise ValueError("Invalid loss function. Choose 'MSE' or 'Weighted'.")
 
             
-            # 优化器：Adam
+            # optimizer：Adam
             optimizer = optim.Adam([
                 {'params': model.conv1.parameters()},
                 {'params': model.conv2.parameters()},
@@ -270,9 +273,6 @@ if __name__ == '__main__':
                 print('eval psnr: {:.2f}'.format(epoch_psnr.avg))
                 print('eval ssim: {:.2f}'.format(epoch_ssim.avg))
                 print('eval sssim: {:.2f}'.format(epoch_sssim.avg))
-
-                # with open(os.path.join(save_dir, "eval_log.txt"), "a") as f:
-                #     f.write(f"Epoch {epoch+1}: PSNR={eval_psnr:.3f}, SSIM={eval_ssim:.3f}, SSSIM={eval_sssim:.3f}\n")
                 
                 # save log
                 log_path = os.path.join(save_dir, 'eval_log.txt')
@@ -312,7 +312,6 @@ if __name__ == '__main__':
             val_sssim_name = save_dir+"/val_results_sssim_" + str(n_fold) + ".csv"
 
             # saving the dataframe
-            # 这个df随着k_fold循环逐渐增加元素，直至达到k_fold个元素；因此上面存储以n_fold区分命名是合理的
             val_results_psnr_df.to_csv(val_psnr_name)
             val_results_ssim_df.to_csv(val_ssim_name)
             val_results_sssim_df.to_csv(val_sssim_name)
@@ -364,6 +363,22 @@ if __name__ == '__main__':
 
                 with torch.no_grad():
                     preds = model(inputs).clamp(0.0, 1.0)
+
+                    """
+                    save output images
+                    """
+                    for i in range(inputs.shape[0]):
+                        pred_np = preds[i].squeeze().cpu().numpy()
+                        # label_np = labels[i].squeeze().cpu().numpy()
+
+                        os.makedirs(scrnn_image_dir, exist_ok=True)
+                        pred_path = os.path.join(scrnn_image_dir, f"img_n={n_fold}_k={k_fold}_be={k_best_epoch}_ind={data_ind}.{image_format}")
+                        # label_path = os.path.join(save_dir, f"label_{data_ind}_{i}")
+
+                        save_output_image(pred_np, pred_path, image_format)
+                        # save_output_image(label_np, label_path, image_format=image_format)
+
+
 
                 test_results_psnr_all[data_ind, k_ind] = calc_psnr(preds, labels)
                 test_results_ssim_all[data_ind, k_ind] = calc_ssim(preds, labels)

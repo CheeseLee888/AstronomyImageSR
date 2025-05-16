@@ -1,7 +1,7 @@
 # Astronomical Image Super-Resolution with Weighted Loss Functions
 
 This repository contains the code for my undergraduate thesis project:  
-**"在天文成像中去卷积算法与深度学习算法的融合"**, based on and extending: Julia Netzel. Statistical stability of super-resolution for astronomical imaging. Master thesis, ETH Zürich, Department of Mathematics, September 2023.
+**"Weighted Loss Function Design for Super-Resolution in Astronomical Imaging"**, based on and extending: Julia Netzel. Statistical stability of super-resolution for astronomical imaging. Master thesis, ETH Zürich, Department of Mathematics, September 2023.
 
 ## Project Overview
 
@@ -13,8 +13,5 @@ The project includes:
 - Custom loss functions: `WeightedMSELoss`, `WeightedMAELoss`
 - Evaluation metrics: SSIM, Selective SSIM (SSSIM)
 
-## TO DO
-For codes in SRCNN folder:
-1. cater more image formats (such as tiff);
-2. optimize the structure of all these codes
-3. add some reasonable notes and markdowns
+# TO DO
+Add some documentation and notes for easy use by others

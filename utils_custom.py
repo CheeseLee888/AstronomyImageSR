@@ -9,6 +9,8 @@ import pandas as pd
 import torch  
 import torch.nn.functional as F 
 
+from astropy.io import fits
+from PIL import Image
 #cudnn.benchmark = True
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -190,3 +192,13 @@ class AverageMeter(object):
         self.sum += val * n
         self.count += n
         self.avg = self.sum / self.count
+
+
+def save_output_image(image_array, filename, image_format):
+    if image_format == 'fits':
+        hdu = fits.PrimaryHDU(image_array)
+        hdu.writeto(filename, overwrite=True)
+    else:
+        # Ensure image is 2D and scaled to 0~255 for tif
+        # image_8bit = (np.clip(image_array, 0, 1) * 255).astype(np.uint8)
+        Image.fromarray(image_array).save(filename)

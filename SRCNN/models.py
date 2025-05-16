@@ -11,7 +11,7 @@ class SRCNN(nn.Module):
         self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x):
-        x = self.relu(self.conv1(x)) # 激活函数：ReLU
+        x = self.relu(self.conv1(x)) # activated function：ReLU
         x = self.relu(self.conv2(x))
         x = self.conv3(x)
         return x

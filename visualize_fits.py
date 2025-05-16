@@ -7,7 +7,6 @@ hdul = fits.open("/Users/peterli/Desktop/BS_thesis/nicmos_se_rl_sssim_10_001/rl_
 image_data = hdul[0].data
 hdul.close()
 
-# 可视化
 plt.imshow(np.log1p(image_data), cmap='gray')
 plt.colorbar()
 plt.title("FITS Image")

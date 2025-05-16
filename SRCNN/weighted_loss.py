@@ -1,4 +1,4 @@
-# ✅ Center-Weighted MSELoss for Astronomy Images
+# Linear Center-Weighted MAELoss or MSELoss for Astronomy Images
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

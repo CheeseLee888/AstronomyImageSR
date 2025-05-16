@@ -8,7 +8,7 @@ import os
 THE ONLY CELL BELOW: MODIFY VALUES TO CATER
 """
 
-image_dataset_name = 'TIFF_TEST_FIVE' # image dataset folder name
+image_dataset_name = 'Hubble_Images_top90_256x256' # image dataset folder name
 image_format = 'tif' # 'tif' or 'fits'
 change = '4_001' #  '4_001' or '10_001' or '10_0015'
 

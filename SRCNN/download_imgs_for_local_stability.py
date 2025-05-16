@@ -1,6 +1,8 @@
 # file to download image results from the trained models for 3 example images from hold-out test set
 # to perform local image stability study
 
+# not customed yet
+
 import os
 import pandas as pd
 import torch
