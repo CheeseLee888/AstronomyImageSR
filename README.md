@@ -13,5 +13,7 @@ The project includes:
 - Custom loss functions: `WeightedMSELoss`, `WeightedMAELoss`
 - Evaluation metrics: SSIM, Selective SSIM (SSSIM)
 
+Also There is a paper attached in Chinese Version. 
+
 # TO DO
 Add some documentation and notes for easy use by others
