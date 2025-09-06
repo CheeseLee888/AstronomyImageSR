@@ -1,6 +1,0 @@
-change = 10_001
-LOSS_FUNC = MSE
-n_folds = 5
-k_folds = 3
-n_epochs = 8
-IMG_NUM = 474

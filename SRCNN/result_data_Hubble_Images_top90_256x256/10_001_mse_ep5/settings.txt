@@ -1,6 +1,0 @@
-change = 10_001
-LOSS_FUNC = MSE
-n_folds = 5
-k_folds = 4
-n_epochs = 5
-IMG_NUM = 90
