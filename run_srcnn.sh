@@ -3,6 +3,10 @@
 # Assumptions:
 #   - Parameters (data paths, epochs, loss, etc.) are defined inside SRCNN/srcnn.py
 
+REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
+export PYTHONPATH="$REPO_ROOT/code:${PYTHONPATH:-}"
+cd "$REPO_ROOT/code/SRCNN"
+
 set -euo pipefail
 
 PYTHON="${PYTHON:-python}"
@@ -15,8 +19,6 @@ if [ -f requirements.txt ]; then
   log "Installing requirements (if needed)"
   "$PYTHON" -m pip install -r requirements.txt >/dev/null
 fi
-
-cd code/SRCNN
 
 # Create CSV files for srcnn.py
 log "Creating CSV files for SRCNN"
@@ -32,10 +34,10 @@ else
   exit 1
 fi
 
-
+# Run analysis notebook
 NOTEBOOK_IN="analysis.ipynb"
 
 echo "Executing analysis notebook..."
 jupyter nbconvert --to notebook --execute "$NOTEBOOK_IN"
 
-echo "Done. Plots in result_plot_fits/"
+echo "Done. Results in result_data_fits/ and result_plot_fits/"

@@ -1,0 +1,7 @@
+# OS / editor junk
+.DS_Store
+.Rhistory
+
+__pycache__/
+*.pyc
+*.pyo

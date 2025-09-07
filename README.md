@@ -6,7 +6,7 @@ The project is based on and extends Julia Netzel, ETH Zürich, Department of Mat
 
 ## Project Overview
 
-We build upon the SRCNN super-resolution framework and investigate the effectiveness of weighted loss functions, specifically weighted MSE and weighted MAE, to enhance the restoration of central fine structures in astronomical images. We also compare with the Richardson–Lucy deconvolution algorithm.  
+We build upon the SRCNN super-resolution framework and investigate the effectiveness of weighted loss functions, specifically weighted MSE and weighted MAE, to enhance the restoration of central fine structures in astronomical images. We also compare with the Richardson–Lucy deconvolution algorithm. This README highlights selected results and provides a one-command demo to reproduce SRCNN on a small sample.
 
 The project includes:  
 - Synthetic datasets with different PSF and noise levels  
@@ -30,9 +30,11 @@ The repository provides a small demo dataset (ten FITS images).
 You can reproduce the SRCNN results directly by running the shell script:
 
 ```bash
-git clone https://github.com/yourname/AstronomyImageSR.git
+git clone https://github.com/CheeseLee888/AstronomyImageSR.git
 cd AstronomyImageSR
 pip install -r requirements.txt
+# install PyTorch separately (CPU example)
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 bash run_srcnn.sh
 ```
 
@@ -41,13 +43,15 @@ This script will:
 - Run the SRCNN training/evaluation (`srcnn.py`).
 - Execute the analysis notebook and save the results of data and plots locally.
 
+Note: Many training parameters (epochs, batch size, learning rate, loss type) are directly defined in the code files (e.g., `SRCNN/srcnn.py`). 
+For this demo, no additional arguments are required — the script runs end-to-end with the default settings.
+
 ## Thesis Dataset
 
 The full experimental datasets (COSMOS NICMOS HST) used in the thesis are available at:  
 [https://irsa.ipac.caltech.edu/data/COSMOS/images/nicmos/](https://irsa.ipac.caltech.edu/data/COSMOS/images/nicmos/)
 
-Due to size limitations, these datasets are not included in this repository. The repository only provides a small demo dataset (ten FITS images) for quick testing.
-
+Note: This repository already includes a small demo dataset (ten FITS images under data_demo/), so you don’t need to download the full dataset to run the demo.
 ## Representative Thesis Results
 
 We include selected results from the full thesis experiments.  
@@ -69,4 +73,4 @@ The Richardson–Lucy reconstructions tend to produce sharper but noisier result
 | Weighted MSE α=2 | 0.985     | 0.027   | 0.792      | 0.230    |
 | Weighted MSE α=4 | 0.986     | 0.027   | 0.797      | 0.224    |
 
-Weighted MSE consistently improves SSSIM, showing better preservation of fine structures compared to non-weighted losses.
+Weighted MSE consistently improves SSSIM, showing better preservation of fine structures compared to non-weighted losses. 
