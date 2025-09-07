@@ -39,7 +39,7 @@ bash run_srcnn.sh
 This script will:
 - Generate the required CSV files (`create_csv.py`).
 - Run the SRCNN training/evaluation (`srcnn.py`).
-- Execute the analysis notebook and save the results to the repository root (`analysis_general_out.ipynb`).
+- Execute the analysis notebook and save the results of data and plots locally.
 
 ## Thesis Dataset
 
@@ -50,13 +50,15 @@ Due to size limitations, these datasets are not included in this repository. The
 
 ## Representative Thesis Results
 
-To complement the demo, we include selected results from the full thesis experiments on COSMOS NICMOS HST datasets.  
+We include selected results from the full thesis experiments.  
 
-### Example Images (Dataset 4.001)
+### Example Images (Training results on Jupiter images)
 
 | HR Image | LR Image | RL Reconstruction | SRCNN (MSE) Reconstruction |
 |----------|----------|-------------------|----------------------------|
 | ![](assets/hr.png) | ![](assets/lr_4_001.png) | ![](assets/rl_4_001.png) | ![](assets/srcnn_mse_4_001.png) |
+
+The Richardson–Lucy reconstructions tend to produce sharper but noisier results, while the SRCNN outputs are smoother with reduced noise.
 
 
 ### Quantitative Metrics (Dataset 4.001)
