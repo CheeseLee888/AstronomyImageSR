@@ -26,14 +26,27 @@ A paper in Chinese version is attached.
 
 ## Quick Demo
 
-The repository provides a small demo dataset (ten FITS images). Results can be reproduced with the following steps:
+The repository provides a small demo dataset (ten FITS images).  
+You can reproduce the SRCNN results directly by running the shell script:
 
 ```bash
 git clone https://github.com/yourname/AstronomyImageSR.git
 cd AstronomyImageSR
 pip install -r requirements.txt
-bash run_demo.sh
+bash run_srcnn.sh
 ```
+
+This script will:
+- Generate the required CSV files (`create_csv.py`).
+- Run the SRCNN training/evaluation (`srcnn.py`).
+- Execute the analysis notebook and save the results to the repository root (`analysis_general_out.ipynb`).
+
+## Thesis Dataset
+
+The full experimental datasets (COSMOS NICMOS HST) used in the thesis are available at:  
+[https://irsa.ipac.caltech.edu/data/COSMOS/images/nicmos/](https://irsa.ipac.caltech.edu/data/COSMOS/images/nicmos/)
+
+Due to size limitations, these datasets are not included in this repository. The repository only provides a small demo dataset (ten FITS images) for quick testing.
 
 ## Representative Thesis Results
 
@@ -45,13 +58,6 @@ To complement the demo, we include selected results from the full thesis experim
 |----------|----------|-------------------|----------------------------|
 | ![](assets/hr.png) | ![](assets/lr_4_001.png) | ![](assets/rl_4_001.png) | ![](assets/srcnn_mse_4_001.png) |
 
-<!-- ### Distribution of SSIM and SSSIM Scores
-
-Representative score distributions for different loss functions (dataset 4.001). Weighted loss functions improve the SSSIM metric, which emphasizes fine structural similarity.
-
-| MSE (no weight) | MAE (no weight) | MSE weighted α=0.2 | MAE weighted α=0.2 |
-|-----------------|-----------------|---------------------|---------------------|
-| ![](assets/mse_no_weight.png) | ![](assets/mae_no_weight.png) | ![](assets/mse_weighted.png) | ![](assets/mae_weighted.png) | -->
 
 ### Quantitative Metrics (Dataset 4.001)
 
@@ -60,8 +66,5 @@ Representative score distributions for different loss functions (dataset 4.001).
 | MSE              | 0.983     | 0.027   | 0.791      | 0.230    |
 | Weighted MSE α=2 | 0.985     | 0.027   | 0.792      | 0.230    |
 | Weighted MSE α=4 | 0.986     | 0.027   | 0.797      | 0.224    |
-| MAE              | 0.989     | 0.032   | 0.766      | 0.273    |
-| Weighted MAE α=2 | 0.989     | 0.031   | 0.771      | 0.243    |
-| Weighted MAE α=4 | 0.989     | 0.032   | 0.778      | 0.239    |
 
-Weighted MAE consistently improves SSSIM, showing better preservation of fine structures compared to non-weighted losses.
+Weighted MSE consistently improves SSSIM, showing better preservation of fine structures compared to non-weighted losses.

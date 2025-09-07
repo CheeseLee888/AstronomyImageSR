@@ -1,0 +1,10 @@
+n_fold=0, k_fold=0, epoch=1: Loss=0.000243, PSNR=42.898, SSIM=0.812, SSSIM=0.805
+n_fold=0, k_fold=1, epoch=1: Loss=0.001837, PSNR=56.082, SSIM=0.998, SSSIM=0.432
+n_fold=1, k_fold=0, epoch=1: Loss=0.000890, PSNR=36.917, SSIM=0.374, SSSIM=0.373
+n_fold=1, k_fold=1, epoch=1: Loss=0.001003, PSNR=56.082, SSIM=0.998, SSSIM=0.432
+n_fold=2, k_fold=0, epoch=1: Loss=0.000177, PSNR=41.395, SSIM=0.612, SSSIM=0.603
+n_fold=2, k_fold=1, epoch=1: Loss=0.000094, PSNR=44.620, SSIM=0.786, SSSIM=0.781
+n_fold=3, k_fold=0, epoch=1: Loss=0.000129, PSNR=58.720, SSIM=0.994, SSSIM=0.913
+n_fold=3, k_fold=1, epoch=1: Loss=0.000163, PSNR=41.234, SSIM=0.671, SSSIM=0.662
+n_fold=4, k_fold=0, epoch=1: Loss=0.000373, PSNR=43.201, SSIM=0.713, SSSIM=0.701
+n_fold=4, k_fold=1, epoch=1: Loss=0.002544, PSNR=31.106, SSIM=0.121, SSSIM=0.120

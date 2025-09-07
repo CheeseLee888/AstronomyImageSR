@@ -21,6 +21,11 @@ from create_dataset import AstropyDataset
 import numpy as np
 
 import sys
+# project_root = <...>/AstronomyImageSR/code
+# from pathlib import Path
+# project_root = Path(__file__).resolve().parents[1]
+# sys.path.insert(0, str(project_root))
+
 sys.path.append('../')  # locally defined
 from utils_custom import save_output_image, AverageMeter, calc_psnr, calc_ssim, calc_sssim # modify utils to utils_custom to avoid conflict with Python package 'utils'
 
@@ -58,7 +63,7 @@ n_folds = 5 # split code into 5 folds
 
 k_folds = 2 # perform 10-fold cross validation on n_train_dataloader
 
-n_epochs = 3 # number of epochs for training
+n_epochs = 1 # number of epochs for training
 
 IMG_NUM = 10 # how many images in the dataset
 

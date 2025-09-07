@@ -1,0 +1,28 @@
+# Core scientific stack
+numpy>=1.24,<3.0
+scipy>=1.10
+pandas>=2.0,<3.0
+
+# Plotting and image I/O
+matplotlib>=3.7
+pillow>=10.0
+tqdm>=4.66
+scikit-image>=0.21
+opencv-python-headless>=4.8
+
+# Astronomy
+astropy>=5.3
+
+# Machine learning utilities
+scikit-learn>=1.3
+
+# Jupyter and automation
+jupyter>=1.0
+nbconvert>=7.8
+papermill>=2.5
+ipykernel>=6.25
+
+# Deep learning framework
+# IMPORTANT: install PyTorch separately per your system (CPU/GPU, CUDA/ROCm).
+# For CPU-only demo:
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
