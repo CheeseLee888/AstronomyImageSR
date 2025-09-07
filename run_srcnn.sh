@@ -40,4 +40,4 @@ NOTEBOOK_IN="analysis.ipynb"
 echo "Executing analysis notebook..."
 jupyter nbconvert --to notebook --execute "$NOTEBOOK_IN"
 
-echo "Done. Results in result_data_fits/ and result_plot_fits/"
+echo "Done. Results in code/SRCNN/result_data_fits/ and code/SRCNN/result_plot_fits/"
